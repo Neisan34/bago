@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Search</title>
+</head>
+<body>
+  <h1>Product Search</h1>
+  
+  <input type="text" id="searchInput" placeholder="Search by name or category">
+  <button id="searchButton">Search</button>
+
+  <div id="searchResults"></div>
+
+  <script>
+    const products = [
+      // ... (your JSON data here)
+    ];
+
+    function searchProducts(query) {
+      const results = [];
+
+      for (const product of products) {
+        const nameMatch = product.name.toLowerCase().includes(query.toLowerCase());
+        const categoryMatch = product.category.toLowerCase().includes(query.toLowerCase());
+
+        if (nameMatch || categoryMatch) {
+          results.push(product);
+        }
+      }
+
+      return results;
+    }
+
+    document.getElementById("searchButton").addEventListener("click", () => {
+      const searchInput = document.getElementById("searchInput");
+      const searchQuery = searchInput.value.trim();
+      const searchResults = searchProducts(searchQuery);
+      
+      const searchResultsDiv = document.getElementById("searchResults");
+      searchResultsDiv.innerHTML = "";
+
+      if (searchResults.length === 0) {
+        searchResultsDiv.innerHTML = "No results found.";
+        return;
+      }
+
+      for (const result of searchResults) {
+        const resultDiv = document.createElement("div");
+        resultDiv.innerHTML = `
+          <h3>${result.name}</h3>
+          <p>Category: ${result.category}</p>
+          <p>Price: $${result.price}</p>
+          <img src="${result.imageSrc}" alt="${result.name}">
+        `;
+        searchResultsDiv.appendChild(resultDiv);
+      }
+    });
+  </script>
+</body>
+</html>
